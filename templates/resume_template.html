@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @page {
+    size: A4;
+    margin: 10mm 12mm 10mm;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8.5pt;
+    line-height: 1.25;
+    color: #1a1a1a;
+    margin: 0;
+  }
+  .resume-header {
+    text-align: left;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1.5px solid #111111;
+  }
+  .top-subtitle {
+    font-size: 7.5pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #555555;
+    margin-bottom: 2px;
+  }
+  h1 {
+    font-size: 14pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #111111;
+    margin: 0 0 2px;
+  }
+  .headline {
+    font-size: 9pt;
+    font-weight: 700;
+    color: #2c3e50;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .contact {
+    font-size: 7.5pt;
+    color: #444444;
+  }
+  h2 {
+    font-size: 8.5pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: #111111;
+    margin: 7px 0 3px;
+    padding-bottom: 2px;
+    border-bottom: 0.8px solid #111111;
+  }
+  p { margin: 0 0 3px; text-align: justify; }
+  
+  /* Two-column expertise table */
+  .expertise-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2px 0 4px;
+  }
+  .expertise-table td {
+    padding: 2px 3px;
+    vertical-align: top;
+    font-size: 8pt;
+  }
+  .expertise-table td:first-child {
+    width: 22%;
+    font-weight: 700;
+    color: #111111;
+    text-transform: uppercase;
+  }
+  
+  .exp-header {
+    font-weight: 700;
+    font-size: 8pt;
+    color: #111111;
+    margin-top: 4px;
+    margin-bottom: 1px;
+  }
+  ul {
+    margin: 2px 0 5px;
+    padding-left: 12px;
+  }
+  li {
+    margin-bottom: 2px;
+    font-size: 8pt;
+    line-height: 1.2;
+  }
+  .compact-list {
+    margin: 2px 0 4px;
+    padding-left: 12px;
+  }
+  .compact-list li {
+    margin-bottom: 1.5px;
+  }
+</style>
+</head>
+<body>
+
+<header class="resume-header">
+  <div class="top-subtitle">Executive Profile</div>
+  <h1>{{ basics.name }}</h1>
+  <div class="headline">{{ tailored.headline }}</div>
+  <div class="contact">
+    {{ basics.phone }} | {{ basics.email }} | {{ basics.location }}
+  </div>
+</header>
+
+<section>
+  <p>{{ tailored.summary }}</p>
+</section>
+
+<section>
+  <h2>Core Expertise</h2>
+  <table class="expertise-table">
+    <tbody>
+      {% for cat in tailored.skill_categories %}
+      <tr>
+        <td>{{ cat.name }}</td>
+        <td>
+          {% for skill in cat.skills %}
+            {% if not loop.first %} • {% endif %}{{ skill }}
+          {% endfor %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Professional Experience</h2>
+  {% for exp in tailored.experience %}
+  <div class="exp-header">{{ exp.company.upper() }} | {{ exp.role }} | {{ exp.duration }}</div>
+  <ul>
+    {% for bullet in exp.bullets %}
+    <li>{{ bullet }}</li>
+    {% endfor %}
+  </ul>
+  {% endfor %}
+</section>
+
+<section>
+  <h2>Selected Projects &amp; Business Impact</h2>
+  {% for proj in tailored.selected_projects %}
+  <div class="exp-header">{{ proj.name }}</div>
+  <ul>
+    {% for bullet in proj.bullets %}
+    <li>{{ bullet }}</li>
+    {% endfor %}
+  </ul>
+  {% endfor %}
+</section>
+
+{% if awards %}
+<section>
+  <h2>Awards &amp; Professional Development</h2>
+  <ul class="compact-list">
+    {% for award in awards %}
+    <li>{{ award }}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<section>
+  <h2>Education</h2>
+  {% for edu in education %}
+  <div style="font-size: 8pt; margin-top: 2px;">
+    <b>{{ edu.degree }}</b> — {{ edu.institution }} ({{ edu.year }})
+  </div>
+  {% endfor %}
+</section>
+
+</body>
+</html>
